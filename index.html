@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="n"> 
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silent Heartache</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+/* ===== GLOBAL BUBBLE THEME - NEW COLORS ===== */
+body {
+    margin: 0;
+    font-family: 'Baloo 2', cursive;
+    background: radial-gradient(circle at top left, #fffae3, #d0f0fd, #fddde6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    color: #4a3f55;
+    position: relative;
+}
+
+/* Floating soft bubble background layer */
+body::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.35) 10%, transparent 11%) 0 0 / 120px 120px;
+    animation: moveBubbles 25s linear infinite;
+    z-index: -1;
+}
+
+@keyframes moveBubbles {
+    from { transform: translateY(0); }
+    to { transform: translateY(-200px); }
+}
+
+/* ===== TITLE ===== */
+h1 {
+    color: #ff7bac;
+    font-size: 3rem;
+    text-align: center;
+    margin: 0;
+    letter-spacing: 2px;
+    text-shadow: 0 5px 20px rgba(255,123,172,0.4);
+}
+
+h2 {
+    color: #7c6eff;
+    font-size: 1.2rem;
+    font-weight: 400;
+    font-style: italic;
+    margin-bottom: 30px;
+    text-align: center;
+    opacity: 0.9;
+}
+
+/* ===== BUBBLE MESSAGE BOX ===== */
+.message-box {
+    background: rgba(255, 255, 255, 0.45);
+    border-radius: 60px;
+    padding: 45px 55px;
+    text-align: center;
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255,255,255,0.6);
+    box-shadow: 
+        inset 0 0 25px rgba(255,255,255,0.8),
+        0 10px 45px rgba(0,0,0,0.08);
+    max-width: 750px;
+    min-height: 140px;
+    position: relative;
+    overflow: hidden;
+}
+
+.message {
+    font-size: 1.5rem;
+    line-height: 1.9;
+    opacity: 0;
+    position: absolute;
+    width: calc(100% - 110px);
+    left: 55px;
+    top: 35px;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.message.active {
+    opacity: 1;
+    position: relative;
+}
+
+/* ===== BUBBLE BUTTONS ===== */
+.btn {
+    margin-top: 25px;
+    padding: 14px 35px;
+    font-size: 1.05rem;
+    border-radius: 40px;
+    border: 2px solid rgba(255,255,255,0.8);
+    background: rgba(255, 230, 245, 0.55);
+    color: #4a3f55;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        inset 0 0 15px rgba(255,255,255,0.7),
+        0 5px 20px rgba(0,0,0,0.08);
+    transition: 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    background: rgba(255, 245, 255, 0.75);
+    box-shadow: 
+        inset 0 0 20px rgba(255,255,255,0.9),
+        0 8px 25px rgba(0,0,0,0.1);
+}
+
+/* ===== FLOATING HEARTS ===== */
+.heart {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: transparent;
+    border-left: 10px solid rgba(255,150,180,0.5);
+    border-bottom: 10px solid rgba(255,150,180,0.5);
+    transform: rotate(-45deg);
+    animation: floatHeart linear infinite;
+    opacity: 0.3;
+}
+
+@keyframes floatHeart {
+    0% { transform: translateY(100vh) rotate(-45deg) scale(0.6); opacity: 0.4; }
+    50% { opacity: 0.7; }
+    100% { transform: translateY(-50px) rotate(-45deg) scale(1); opacity: 0; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width: 600px) {
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1rem; margin-bottom: 20px; }
+    .message { font-size: 1.1rem; width: calc(100% - 50px); left: 25px; top: 25px; }
+    .message-box { padding: 35px 25px; max-width: 95%; min-height: 130px; }
+}
+</style>
+</head>
+
+<body>
+
+<h1>Silent Heartache</h1>
+<h2>For the love that never returned</h2>
+
+<div class="message-box" id="message-box"></div>
+<button class="btn" onclick="nextMessage()">Next Message</button>
+<button class="btn" onclick="toggleMusic()">Play/Pause Music</button>
+
+<!-- Music connected to song folder -->
+<audio id="bgMusic" src="song/wildflower.mp3" autoplay loop></audio>
+
+<script>
+// Messages
+const messages = [
+    "I wonder if you even notice me the way I notice you.",
+    "You love someone else, and I have to pretend I’m okay.",
+    "Sometimes, the person you'd take a bullet for ends up being the one behind the gun.",
+    "The worst kind of pain is when you're smiling to stop the tears from falling.",
+    "It's amazing how someone can break your heart and you can still love them with all the little pieces.",
+    "we try to hide our feelings, but we forget that our eyes speak.",
+    "Every smile you give them feels like a sting in my heart.",
+    "I write you messages I never send, because you’ll never understand.",
+    "It hurts that you’re happy, and I’m just here.",
+    "I care too much for someone who doesn’t care at all.",
+    "You’ll never know the nights I spent thinking about you.",
+    "Loving you quietly feels like screaming into a void.",
+    "My heart whispers your name, but you never hear it.",
+    "Some love isn’t meant to be returned, and it breaks us anyway."
+];
+
+let currentIndex = 0;
+const box = document.getElementById('message-box');
+
+function showMessage(index) {
+    box.innerHTML = `<p class="message active">${messages[index]}</p>`;
+}
+
+showMessage(currentIndex);
+
+setInterval(() => {
+    currentIndex = (currentIndex + 1) % messages.length;
+    showMessage(currentIndex);
+}, 5000);
+
+function nextMessage() {
+    currentIndex = (currentIndex + 1) % messages.length;
+    showMessage(currentIndex);
+}
+
+// Music control
+function toggleMusic() {
+    const music = document.getElementById('bgMusic');
+    if (music.paused) {
+        music.play();
+    } else {
+        music.pause();
+    }
+}
+
+// Floating hearts
+for (let i = 0; i < 30; i++) {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = 4 + Math.random() * 6 + 's';
+    heart.style.width = 10 + Math.random() * 15 + 'px';
+    heart.style.height = 10 + Math.random() * 15 + 'px';
+    document.body.appendChild(heart);
+}
+</script>
+
+</body>
+</html>
